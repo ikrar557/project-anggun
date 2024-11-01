@@ -1,0 +1,42 @@
+runtime: php82
+env: standard
+
+instance_class: F2
+
+automatic_scaling:
+  max_instances: 1
+
+env_variables:
+  APP_KEY: 'base64:6J4jxxXjBOJnsnNWQtWVSVX++f+4dGOODURy4pAW5Fg='
+  APP_STORAGE: '/tmp'
+  CACHE_DRIVER: 'cookie'
+  SESSION_DRIVER: 'cookie'
+  VIEW_COMPILED_PATH: '/tmp'
+  APP_DEBUG: true
+  APP_NAME: 'Try App'
+
+  # Static database configuration
+  DB_HOST: DB_HOST
+  DB_USERNAME: DB_USERNAME
+  DB_PASSWORD: DB_PASSWORD
+  DB_CONNECTION: 'mysql'
+  DB_PORT: '3306'
+  DB_DATABASE: 'laravel'
+
+handlers:
+  - url: /favicon\.ico
+    static_files: public/favicon.ico
+    upload: public/favicon\.ico
+
+  - url: /robots\.txt
+    static_files: public/robots.txt
+    upload: public/robots\.txt
+
+  - url: /(.*\.(css|js|map|jpg|jpeg|png|gif|svg|ico|eot|otf|ttf|woff|woff2))$
+    static_files: public/\1
+    upload: public/(.*\.(css|js|map|jpg|jpeg|png|gif|svg|ico|eot|otf|ttf|woff|woff2))$
+
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
