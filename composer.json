@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "google/cloud-secret-manager": "^1.15",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9"
     },
@@ -32,11 +33,21 @@
     },
     "scripts": {
         "post-autoload-dump": [
+            "mkdir -p ./bootstrap/cache/",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-install-cmd": [
+            "composer dump-autoload",
+            "php artisan config:clear",
+            "php artisan view:clear",
+            "php artisan cache:clear",
+            "php artisan optimize:clear",
+            "chmod -R 775 bootstrap/cache",
+            "chmod -R 775 storage"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -49,12 +60,6 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
-        ],
-        "post-install-cmd": [
-            "chmod -R 755 bootstrap/cache",
-            "php artisan config:clear",
-            "php artisan cache:clear",
-            "php artisan route:clear"
         ]
     },
     "extra": {

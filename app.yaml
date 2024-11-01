@@ -1,27 +1,22 @@
-runtime: php82
+runtime: php82  # or php81 for Laravel 9+
 env: standard
 
 instance_class: F2
 
-automatic_scaling:
-  max_instances: 1
-
 env_variables:
   APP_KEY: 'base64:6J4jxxXjBOJnsnNWQtWVSVX++f+4dGOODURy4pAW5Fg='
-  APP_STORAGE: '/tmp'
-  CACHE_DRIVER: 'cookie'
-  SESSION_DRIVER: 'cookie'
-  VIEW_COMPILED_PATH: '/tmp'
-  APP_DEBUG: true
-  APP_NAME: 'Try App'
+  APP_STORAGE: /tmp
+  VIEW_COMPILED_PATH: /tmp
+  APP_SERVICES_CACHE: /tmp/services.php
+  APP_PACKAGES_CACHE: /tmp/packages.php
+  APP_CONFIG_CACHE: /tmp/config.php
+  APP_ROUTES_CACHE: /tmp/routes.php
+  CACHE_DRIVER: database
+  SESSION_DRIVER: database
 
-  # Static database configuration
-  DB_HOST: DB_HOST
-  DB_USERNAME: DB_USERNAME
-  DB_PASSWORD: DB_PASSWORD
+  # Database configuration
   DB_CONNECTION: 'mysql'
   DB_PORT: '3306'
-  DB_DATABASE: 'laravel'
 
 handlers:
   - url: /favicon\.ico
@@ -37,6 +32,4 @@ handlers:
     upload: public/(.*\.(css|js|map|jpg|jpeg|png|gif|svg|ico|eot|otf|ttf|woff|woff2))$
 
   - url: /.*
-    secure: always
-    redirect_http_response_code: 301
     script: auto
