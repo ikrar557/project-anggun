@@ -3,11 +3,8 @@ name: Tests
 on:
   push:
     branches:
-      - master
+      - main
       - '*.x'
-  pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 permissions:
   contents: read
@@ -36,6 +33,13 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Set up Google Cloud credentials
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: |
+          echo "$GOOGLE_CREDENTIALS" | base64 --decode > $HOME/google-credentials.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/google-credentials.json" >> $GITHUB_ENV
 
       - name: Copy environment file
         run: cp .env.example .env
